@@ -1,18 +1,30 @@
 #include <iostream>
+#include "stdlib.h"
 #include "Simulation.h"
 
-int main(){
-    
-    Simulation sim(1.e-3);
+int main(int argc, char* argv[]){    
+    if (argc < 3){
+        std::cout << "Podaj krok czasowy i calkowity czas" << std::endl;
+        return 1;
+    }
 
-    for (int i=0; i<3.e7; i++)
+    double tStep = atof(argv[1]);
+    double totalTime = atof(argv[2]);
+
+    long int nSteps = totalTime / tStep;
+    std::cout << "Liczba krokow: " << nSteps << std::endl;
+
+    bool to2PN = true;
+    Simulation sim(tStep, to2PN);
+
+    for (long int i=0; i<nSteps; i++)
     {
         sim.Proceed();
 
-        if(i%10000 == 0)
+        if(i%1 == 0)
         {
-            std::cout << "Step " << i << std::endl;
-            sim.Print();
+            std::cout << i*tStep << "\t";
+            sim.PrintMag();
             std::cout << "\n";
         }
     }

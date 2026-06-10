@@ -1,8 +1,6 @@
 file(REMOVE_RECURSE
   "CMakeFiles/vectorSimLib.dir/src/Simulation.cpp.o"
-  "CMakeFiles/vectorSimLib.dir/src/Simulation.cpp.o.d"
   "CMakeFiles/vectorSimLib.dir/src/Vector.cpp.o"
-  "CMakeFiles/vectorSimLib.dir/src/Vector.cpp.o.d"
   "libvectorSimLib.a"
   "libvectorSimLib.pdb"
 )

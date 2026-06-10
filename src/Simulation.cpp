@@ -21,13 +21,20 @@ Vector Simulation::calcAcc (const Vector& pos, const Vector& vel){
     B2 +=       -0.5*(4+41*eta+8*eta*eta)*(m/r)*G;
     B2 /= c*c*c*c;
 
-    // A(and B)_{2.5 PN}
-    double A25 = 3*v*v + (17/3)*(m/r)*G;
-    A25 *= G;
-    A25 /= c*c*c*c*c;
-    double B25 = v*v + 3*(m/r)*G;
-    B25 *= G;
-    B25 /= c*c*c*c*c;
+    double A25, B25;
+
+    if(to2PN){
+        A25 = 0.0;
+        B25 = 0.0;
+    }
+    else{   // A(and B)_{2.5 PN}
+        A25 = 3*v*v + (17/3)*(m/r)*G;
+        A25 *= G;
+        A25 /= c*c*c*c*c;
+        B25 = v*v + 3*(m/r)*G;
+        B25 *= G;
+        B25 /= c*c*c*c*c;
+    }
 
     // Coefficient at the vector n
     double nCoeff = -1 + A1+A2 + (8/5)*eta*(m/r)*rDot*A25;
@@ -36,8 +43,6 @@ Vector Simulation::calcAcc (const Vector& pos, const Vector& vel){
     // Coefficient at the vector v
     double vCoeff = rDot*(B1+B2) - (8/5)*eta*(m/r)*B25;
     vCoeff *= G*(m/(r*r));
-
-    //std::cout << "nCoeff: " << nCoeff << "\t vCoeff: " << vCoeff << std::endl;
 
     // Building the acceleration vector
     Vector Acc = n*nCoeff + vel*vCoeff;
@@ -48,14 +53,10 @@ Vector Simulation::calcAcc (const Vector& pos, const Vector& vel){
 void Simulation::Proceed() {
     
     Vector k1 = calcAcc (X, V);
-    //k1.Print();
 
     Vector X2 = X + 0.5*tStep*V;
     Vector V2 = V + 0.5*tStep*k1;
-    //X2.Print();
-    //V2.Print();
     Vector k2 = calcAcc (X2, V2);
-    //k2.Print();
     
     Vector X3 = X + 0.5*tStep*V2;
     Vector V3 = V + 0.5*tStep*k2;
@@ -72,4 +73,8 @@ void Simulation::Proceed() {
 void Simulation::Print(){
     X.Print();
     V.Print();
+}
+
+void Simulation::PrintMag(){
+    std::cout << X.Mag() << "\t" << V.Mag();
 }
