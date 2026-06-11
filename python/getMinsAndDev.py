@@ -2,13 +2,14 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-# Skrypt szuka minimów odległości w kolejnych przedziałach czasowych postaci [t+TExp/2, t+1.5*TExp],
+# Skrypt szuka minimow odleglosci w kolejnych przedzialach czasowych postaci [t+TExp/2, t+1.5*TExp],
 # gdzie t jest czasem ostatniego znalezionego minimum.
-# Na końcu wypisywane są znalezione minima odległości oraz czasy ich wystąpienia
-# Poza tym obliczane jest odchylenie kwadratowe minimalnych odległości od zerowej (dokładnej) wartości
+# Na koncu wypisywane sa znalezione minima odleglosci oraz czasy ich wystapienia
+# Poza tym obliczane jest odchylenie kwadratowe minimalnych odleglosci od zerowej (dokladnej) wartosci
 
 dataFile = "../build/out.txt"
-data = np.loadtxt(dataFile, skiprows=3)
+header = np.loadtxt(dataFile, skiprows=1, max_rows=1)
+data = np.loadtxt(dataFile, skiprows=2)
 
 times = data[:,0]
 distances = data[:,1]
@@ -42,3 +43,8 @@ print([float(x) for x in minDistances])
 
 deviation = np.sqrt(np.mean((minDistances[1:] - minDistances[0])**2))
 print(deviation)
+
+with open("devs.txt",'a') as f:
+    print([float(x) for x in header],file=f)
+    print(len(minDistances),file=f)
+    print(deviation,"\n",file=f)

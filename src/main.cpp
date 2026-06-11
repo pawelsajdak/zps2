@@ -10,10 +10,10 @@ int main(int argc, char* argv[]){
 
     double tStep = atof(argv[1]);
     double totalTime = atof(argv[2]);
-    std::cout << "Krok czasowy:\t" << tStep << std::endl << "Calkowity czas:\t" << totalTime << std::endl;
+    std::cout << "Krok czasowy, Calkowity czas, Liczba krokow" << std::endl;
 
     long int nSteps = totalTime / tStep;
-    std::cout << "Liczba krokow:\t" << nSteps << std::endl;
+    std::cout << tStep << "\t" << totalTime << "\t" << nSteps << std::endl;
 
     bool to2PN = true;
     Simulation sim(tStep, to2PN);
