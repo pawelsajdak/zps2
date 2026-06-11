@@ -10,23 +10,23 @@ int main(int argc, char* argv[]){
 
     double tStep = atof(argv[1]);
     double totalTime = atof(argv[2]);
+    std::cout << "Krok czasowy:\t" << tStep << std::endl << "Calkowity czas:\t" << totalTime << std::endl;
 
     long int nSteps = totalTime / tStep;
-    std::cout << "Liczba krokow: " << nSteps << std::endl;
+    std::cout << "Liczba krokow:\t" << nSteps << std::endl;
 
     bool to2PN = true;
     Simulation sim(tStep, to2PN);
 
     for (long int i=0; i<nSteps; i++)
     {
-        sim.Proceed();
-
         if(i%1 == 0)
         {
             std::cout << i*tStep << "\t";
             sim.PrintMag();
             std::cout << "\n";
         }
+        sim.Proceed();
     }
 
     return 0;
