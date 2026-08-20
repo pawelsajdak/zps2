@@ -2,3 +2,12 @@
 101
 0.0 
 
+[1.0, 10000000.0, 10000000.0, 0.0]
+[1.0, 10000000.0, 10000000.0, 0.0]
+Number of minimums: 366
+Standard deviation of the minimum distance: 0.0 
+
+[1.0, 1000000000.0, 1000000000.0, 0.0]
+Number of minimums: 36596
+Standard deviation of the minimum distance: 230.0465972745776 
+

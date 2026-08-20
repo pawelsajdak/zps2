@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -37,14 +37,14 @@ while (t+TExp < endTime):
     t = timeOfMin
 
 timeDiffs = [timesOfMin[i+1] - timesOfMin[i] for i in range(0,len(timesOfMin)-2)]
-print([float(x) for x in timesOfMin])
-print([float(x) for x in minDistances])
-#print([float(x) for x in timeDiffs])
+# print([float(x) for x in timesOfMin])
+# print([float(x) for x in minDistances])
+# #print([float(x) for x in timeDiffs])
 
 deviation = np.sqrt(np.mean((minDistances[1:] - minDistances[0])**2))
-print(deviation)
+# print(deviation)
 
 with open("devs.txt",'a') as f:
     print([float(x) for x in header],file=f)
-    print(len(minDistances),file=f)
-    print(deviation,"\n",file=f)
+    print("Number of minimums: "+str(len(minDistances)),file=f)
+    print("Standard deviation of the minimum distance: "+str(deviation),"\n",file=f)

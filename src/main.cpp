@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 #include "stdlib.h"
 #include "Simulation.h"
 
@@ -8,24 +9,40 @@ int main(int argc, char* argv[]){
         return 1;
     }
 
+    bool to2PN = true;
+
     double tStep = atof(argv[1]);
     double totalTime = atof(argv[2]);
-    std::cout << "Krok czasowy, Calkowity czas, Liczba krokow" << std::endl;
+    std::cout << "Krok czasowy \t Calkowity czas \t Liczba krokow \t to2PN?" << std::endl;
 
     long int nSteps = totalTime / tStep;
-    std::cout << tStep << "\t" << totalTime << "\t" << nSteps << std::endl;
+    std::cout << tStep << "\t" << totalTime << "\t" << nSteps << "\t" << to2PN << std::endl << "Ekstrema lokalne:" << std::endl;
+    std::cout << "Czas \t Odleglosc" << std::endl << std::setprecision(15);
 
-    bool to2PN = false;
+    // Symulacja
     Simulation sim(tStep, to2PN);
+    double lastDistance = sim.GetMagX();
+    bool distanceIsGrowing = true;
 
     for (long int i=0; i<nSteps; i++)
     {
-        if(i%1 == 0)
-        {
-            std::cout << i*tStep << "\t";
-            sim.PrintMag();
-            std::cout << "\n";
+        double currentDistance = sim.GetMagX();
+        if(distanceIsGrowing){
+            if(currentDistance < lastDistance)
+            {
+                std::cout << i*tStep << "\t" << 0.5*(lastDistance+currentDistance) << std::endl;
+                distanceIsGrowing = false;
+            }
         }
+        else{
+            if(currentDistance > lastDistance)
+            {
+                std::cout << -i*tStep << "\t" << 0.5*(lastDistance+currentDistance) << std::endl;
+                distanceIsGrowing = true;
+            }
+        }
+
+        lastDistance = currentDistance;
         sim.Proceed();
     }
 

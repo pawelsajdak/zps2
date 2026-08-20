@@ -32,7 +32,9 @@ class Simulation{
 
     void Print();
     void PrintMag();
-
+    double GetMagX()    {return X.Mag();}
+    double GetMagV()    {return V.Mag();}
+    
     // Goes one step forward
     void Proceed();
 
