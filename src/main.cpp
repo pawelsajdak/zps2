@@ -15,7 +15,7 @@ int main(int argc, char* argv[]){
     long int nSteps = totalTime / tStep;
     std::cout << tStep << "\t" << totalTime << "\t" << nSteps << std::endl;
 
-    bool to2PN = true;
+    bool to2PN = false;
     Simulation sim(tStep, to2PN);
 
     for (long int i=0; i<nSteps; i++)
