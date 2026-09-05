@@ -6,6 +6,7 @@ import os
 x = ["1","0.1","0.01","0.001"]
 y = [0.024113097804277225, 0.00025181058786348927, 0.0002514415609479116, 0.0002508044174798041]
 
+plt.figure(figsize=(4, 4))
 plt.scatter(x,y)
 plt.xlabel("Krok czasowy [s]")
 plt.ylabel("Średnia kwadratowa odchylenia [km]")
