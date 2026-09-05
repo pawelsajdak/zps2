@@ -5,14 +5,14 @@ import os
 
 dataDir = "../build/"
 fileName = "out0.txt"
-outputDir = "../pomiary_badania/"
+outputDir = "../getMins/"
 os.makedirs(outputDir, exist_ok=True)
 
 header = np.loadtxt(dataDir+fileName, skiprows=1, max_rows=1)
 
 lines_data = []
 
-with open(dataFile, "r", encoding="utf-8") as f:
+with open(dataDir+fileName, "r", encoding="utf-8") as f:
     for _ in range(3):
         next(f, None) # pomiń pierwsze linie
     for line in f:
@@ -50,9 +50,15 @@ while (t + TExp < endTime):
     t = timeOfMin
 
 timeDiffs = [timesOfMin[i+1] - timesOfMin[i] for i in range(len(timesOfMin)-1)]
-savingTimeInterval = times[1,0] - times[0,0]
+savingTimeInterval = times[1] - times[0]
 
+with open(outputDir+fileName,'w') as f_out:
+    f_out.write(str(header)+"\n")
+    f_out.write(f"Różnica czasu zapisywanych kroków: {savingTimeInterval}\n")
+    for x in timeDiffs:
+        f_out.write(f"{x:.10f}\n")
 
+'''
 if len(timeDiffs) > 0:
     plt.figure(figsize=(8, 5))
     orbity = range(1, len(timeDiffs) + 1)
@@ -67,3 +73,4 @@ if len(timeDiffs) > 0:
     plt.savefig(os.path.join(outputDir, "wykres_getMins_okresy.pdf"), bbox_inches='tight')
     plt.close()
     print("[SUKCES] Wygenerowano wykres: wykres_getMins_okresy.pdf")
+'''
