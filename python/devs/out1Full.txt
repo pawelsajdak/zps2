@@ -1,3 +1,0 @@
-[1.e+07 1.e-01 1.e+08 1.e+00 1.e+00]
-Number of minimums: 358 
-Standard deviation of the minimum distance: 0.00023048055933845617
