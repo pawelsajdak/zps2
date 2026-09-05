@@ -1,4 +1,6 @@
 #!/usr/bin/python3
+import sys
+import os
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -7,44 +9,49 @@ import matplotlib.pyplot as plt
 # Na koncu wypisywane sa znalezione minima odleglosci oraz czasy ich wystapienia
 # Poza tym obliczane jest odchylenie kwadratowe minimalnych odleglosci od zerowej (dokladnej) wartosci
 
-dataFile = "../build/out.txt"
-header = np.loadtxt(dataFile, skiprows=1, max_rows=1)
-data = np.loadtxt(dataFile, skiprows=2)
+args = sys.argv
+
+outputDir = "devs"
+dataDir = "../build/"
+fileName = ""
+if len(sys.argv) > 1:
+    fileName = str(args[1])
+else:
+    fileName = "out.txt"
+header = np.loadtxt(dataDir+fileName, skiprows=1, max_rows=1)
+data = np.loadtxt(dataDir+fileName, skiprows=3)
 
 times = data[:,0]
 distances = data[:,1]
-tStep = times[1] - times[0]
 endTime = times[-1]
 
-TExp = 7.75*3600    # expected orbital period
-t = 0               # a working variable increased at the end of the "while" loop
+TExp = 7.75*3600    # spodziewany okres orbity
+t = 0               # zmienna robocza
 
 timesOfMin = [times[0]]     
 minDistances = [distances[0]]
-# Added the first values, since the simulation begins at the minimum distance
+# Symulacja zaczyna się w periastronie
 
 while (t+TExp < endTime):
-    tUp = min([t+1.5*TExp, endTime])
-    start_index = np.argmax(times > t+TExp/2)
-    end_index = np.argmax(times >= tUp)
-
-    minDistance = np.min(distances[start_index:end_index])
-    timeOfMin = times[start_index + np.argmin(distances[start_index:end_index])]
+    tUp = min(t+1.5*TExp, endTime)
+    start_index = int(np.argmax(times > t+TExp/2))
+    end_index   = int(np.argmax(times >= tUp))
+    if end_index <= start_index: break
+    
+    seg = distances[start_index:end_index]
+    minIdx = int(np.argmin(seg))
+    minDistance = float(seg[minIdx])
+    timeOfMin   = float(times[start_index + minIdx])
     
     timesOfMin.append(timeOfMin)
     minDistances.append(minDistance)
 
     t = timeOfMin
 
-timeDiffs = [timesOfMin[i+1] - timesOfMin[i] for i in range(0,len(timesOfMin)-2)]
-# print([float(x) for x in timesOfMin])
-# print([float(x) for x in minDistances])
-# #print([float(x) for x in timeDiffs])
+arr = np.array(minDistances)
+deviation = float(np.sqrt(np.mean((arr[1:] - arr[0])**2))) if len(arr) > 1 else 0.0
 
-deviation = np.sqrt(np.mean((minDistances[1:] - minDistances[0])**2))
-# print(deviation)
-
-with open("devs.txt",'a') as f:
-    print([float(x) for x in header],file=f)
-    print("Number of minimums: "+str(len(minDistances)),file=f)
-    print("Standard deviation of the minimum distance: "+str(deviation),"\n",file=f)
+with open(os.path.join(outputDir,fileName),'w') as f_out:
+    f_out.write(str(header)+"\n")
+    f_out.write(f"Number of minimums: {len(minDistances)} \n")
+    f_out.write(f"Standard deviation of the minimum distance: {deviation}")

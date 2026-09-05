@@ -3,46 +3,46 @@
 #include "stdlib.h"
 #include "Simulation.h"
 
+// Wywołanie:
+// main <całkowity czas> <krok czasowy> [interwał wypisu] [to2PN]
+
 int main(int argc, char* argv[]){    
     if (argc < 3){
-        std::cout << "Podaj krok czasowy i calkowity czas" << std::endl;
+        std::cerr << "Podaj calkowity czas oraz krok czasowy" << std::endl;
         return 1;
     }
 
-    bool to2PN = true;
+    // Wczytanie parametrów
+    double totalTime = atof(argv[1]);
+    double tStep = atof(argv[2]);
+    
+    int outputInterval = 1;
+    if (argc > 3)   outputInterval = atoi(argv[3]);
 
-    double tStep = atof(argv[1]);
-    double totalTime = atof(argv[2]);
-    std::cout << "Krok czasowy \t Calkowity czas \t Liczba krokow \t to2PN?" << std::endl;
+    bool to2PN = false;
+    if (argc > 4)   to2PN = atoi(argv[4]);
+
+    // Wypisanie parametrów
+    std::cout << "Calkowity czas \t Krok czasowy \t Liczba krokow \t Interwal wypisu \t to2PN?" << std::endl;
 
     long int nSteps = totalTime / tStep;
-    std::cout << tStep << "\t" << totalTime << "\t" << nSteps << "\t" << to2PN << std::endl << "Ekstrema lokalne:" << std::endl;
-    std::cout << "Czas \t Odleglosc" << std::endl << std::setprecision(15);
+    std::cout << totalTime << "\t" << tStep << "\t" << nSteps << "\t" << outputInterval << "\t" << to2PN << std::endl;
+    std::cout << "t \t r \t v" << std::endl;
+    std::cout << std::scientific << std::setprecision(10);
 
-    // Symulacja
+
+    ///////////////// Symulacja ///////////////////////
     Simulation sim(tStep, to2PN);
-    double lastDistance = sim.GetMagX();
-    bool distanceIsGrowing = true;
 
     for (long int i=0; i<nSteps; i++)
     {
-        double currentDistance = sim.GetMagX();
-        if(distanceIsGrowing){
-            if(currentDistance < lastDistance)
-            {
-                std::cout << i*tStep << "\t" << 0.5*(lastDistance+currentDistance) << std::endl;
-                distanceIsGrowing = false;
-            }
-        }
-        else{
-            if(currentDistance > lastDistance)
-            {
-                std::cout << -i*tStep << "\t" << 0.5*(lastDistance+currentDistance) << std::endl;
-                distanceIsGrowing = true;
-            }
+        if(i%outputInterval == 0)    // wypisuj po niektórych krokach
+        {
+            std::cout << i*tStep << "\t";
+            sim.PrintMag();
+            std::cout << "\n";
         }
 
-        lastDistance = currentDistance;
         sim.Proceed();
     }
 

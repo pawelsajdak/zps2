@@ -3,10 +3,12 @@
 
 
 Vector Simulation::calcAcc (const Vector& pos, const Vector& vel){
-    double r = pos.Mag();
-    Vector n = pos*(1/r);
-    double v = vel.Mag();
-    double rDot = vel*n;
+    double r = pos.Mag();   // odległość
+    Vector n = pos*(1/r);   // wersor n
+    double v = vel.Mag();   // wartość prędkości
+    double rDot = vel*n;    // dr/dt = prędkość * n (iloczyn skalarny)
+
+    // Obliczenie współczynników do poprawek post-newtonowskich
 
     double A1 = -(1+3*eta)*v*v  +   (3/2)*eta*rDot*rDot +   2*(2+eta)*(m/r) *G;
     A1 /= c*c;
@@ -21,8 +23,8 @@ Vector Simulation::calcAcc (const Vector& pos, const Vector& vel){
     B2 +=       -0.5*(4+41*eta+8*eta*eta)*(m/r)*G;
     B2 /= c*c*c*c;
 
+    // poprawki 2.5PN
     double A25, B25;
-
     if(to2PN){
         A25 = 0.0;
         B25 = 0.0;
@@ -36,21 +38,26 @@ Vector Simulation::calcAcc (const Vector& pos, const Vector& vel){
         B25 /= c*c*c*c*c;
     }
 
-    // Coefficient at the vector n
+
+    // Konstruowanie wektora przyspieszenia
+
+    // współczynnik przy wersorze n
     double nCoeff = -1 + A1+A2 + (8/5)*eta*(m/r)*rDot*A25;
     nCoeff *= G*(m/(r*r));
 
-    // Coefficient at the vector v
+    // współczynnik przy wektorze v
     double vCoeff = rDot*(B1+B2) - (8/5)*eta*(m/r)*B25;
     vCoeff *= G*(m/(r*r));
 
-    // Building the acceleration vector
+    // wektor przyspieszenia
     Vector Acc = n*nCoeff + vel*vCoeff;
 
     return Acc;
 }
 
-void Simulation::Proceed() {
+
+void Simulation::Proceed() {    
+    // Zmiana wektorów X i V zgodnie z algorytmem RK4
     
     Vector k1 = calcAcc (X, V);
 
@@ -70,11 +77,11 @@ void Simulation::Proceed() {
     V += (tStep/6)*(k1 + 2*k2 + 2*k3 + k4);
 }
 
-void Simulation::Print(){
+void Simulation::Print() const{
     X.Print();
     V.Print();
 }
 
-void Simulation::PrintMag(){
+void Simulation::PrintMag() const{
     std::cout << X.Mag() << "\t" << V.Mag();
 }
