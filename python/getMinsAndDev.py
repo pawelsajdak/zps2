@@ -27,7 +27,7 @@ minDistances = [746600.0]   # początkowa wartość
 for i in range(len(times)):
     time = times[i]
     if time < 0:
-        timesOfMin.append(time)
+        timesOfMin.append(-time)
         minDistances.append(distances[i])
 
 
