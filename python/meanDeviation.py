@@ -21,7 +21,7 @@ header = np.loadtxt(dataDir+fileName, skiprows=1, max_rows=1)   # parametry symu
 dataOrig = np.loadtxt(dataDir+fileName, skiprows=3)
 
 data = dataOrig[dataOrig[:,0] < 0]  # chcemy tylko minima odległości, a są one zapisywane z ujemnym czasem
-data = data[data[:,0] >= -1.e6]      # w celu porównania, tylko czas do 10^6 s (czasy są tu ujemne)
+data = data[data[:,0] >= -1.e7]      # w celu porównania, tylko czas do 10^7 s (czasy są tu ujemne)
 
 times = -data[:,0]      # czasy były zapisane jako ujemne
 distances = data[:,1]
@@ -36,7 +36,7 @@ distanceDevs = distances - distanceInit
 arr = np.array(distanceDevs)
 quadMean = float( np.sqrt( np.mean(arr**2) ) )
 
-with open(os.path.join(outputDir,"e6"+fileName),'w') as f_out:
+with open(os.path.join(outputDir,"e7"+fileName),'w') as f_out:
     f_out.write(f"Ostatni czas: {times[-1]:.2e} \n")
     f_out.write("całkowity czas \t krok czasowy \t liczba kroków \t to2PN? \n"+str(header)+"\n")
     f_out.write(f"Liczba minimów: {len(distances)} \n")
