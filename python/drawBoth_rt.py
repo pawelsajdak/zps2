@@ -4,6 +4,10 @@ import matplotlib.pyplot as plt
 import os
 import sys
 
+# Wersja odpowiednia do symulacji zapisującej tylko ekstrema (wersja main.cpp)
+# Program wybiera minima r, czyli te z ujemnym czasem
+# Rysowany jest wykres r(t) dla DWÓCH plików wyjściowych z symulacji
+
 outputDir = "plots"
 dataDir = "../build/"
 
@@ -11,7 +15,7 @@ dataDir = "../build/"
 distanceInit = 746600.0
 
 ######## Dane z pierwszego pliku (2PN)
-fileName1 = "out2PN_1.txt"
+fileName1 = "out2PN_2.txt"
 dataOrig1 = np.loadtxt(dataDir+fileName1, skiprows=3)
 
 data1 = dataOrig1[dataOrig1[:,0] < 0]  # chcemy tylko minima odległości, a są one zapisywane z ujemnym czasem
@@ -26,7 +30,7 @@ times1 = 1.e-9 * times1
 distanceDevs1 = distances1 - distanceInit
 
 ######## Dane z drugiego pliku (2,5PN)
-fileName2 = "out25PN_1.txt"
+fileName2 = "out25PN_2.txt"
 dataOrig2 = np.loadtxt(dataDir+fileName2, skiprows=3)
 
 data2 = dataOrig2[dataOrig2[:,0] < 0]  # chcemy tylko minima odległości, a są one zapisywane z ujemnym czasem
@@ -55,5 +59,5 @@ ax.set_title('Zmiany separacji obiektów w periastronie względem początkowej w
 ax.grid(True, linestyle='--', alpha=0.6)
 ax.legend(fontsize=14,markerscale=30.0,loc='center right')
 
-fig.savefig(os.path.join(outputDir, "both.pdf"), bbox_inches='tight')
+fig.savefig(os.path.join(outputDir, fileName1[3:-4]+"__"+fileName2[3:-4]+".pdf"), bbox_inches='tight')
 plt.close()

@@ -1,4 +1,4 @@
 całkowity czas 	 krok czasowy 	 liczba kroków 	 to2PN? 
-[1.e+09 1.e+00 1.e+09 1.e+00]
+[1.e+09 1.e-02 1.e+11 1.e+00]
 Liczba minimów: 35797 
-Średnia kwadratowa odchyleń r: 0.02322719
+Średnia kwadratowa odchyleń r: 0.00001367

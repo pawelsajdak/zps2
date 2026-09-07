@@ -13,7 +13,6 @@ M = 1.4414 + 1.3867     # Mo (solar masses)
 ecc = 0.62
 P = 0.323 * 24 * 3600   # s
 
-# Pdot = (6*rDot/(1-ecc)) * np.cbrt( (np.pi*np.pi*P)/(16*G*M) )
 
 # A = 1.5*( (4pi^2P)/(GM) )^(1/3)
 A = (4*np.pi**2 * P) / (G*M)

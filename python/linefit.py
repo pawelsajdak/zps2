@@ -5,6 +5,9 @@ import os
 import sys
 
 # Wersja odpowiednia do symulacji zapisującej tylko ekstrema (wersja main.cpp)
+# Program wybiera minima r, czyli te z ujemnym czasem
+# Do rozkładu r(t) dopasowywana jest prosta 
+# Rysowany jest wykres r(t) oraz dopasowana prosta
 
 args = sys.argv
 
@@ -15,7 +18,6 @@ if len(sys.argv) > 1:
     fileName = str(args[1])
 else:
     exit()
-header = np.loadtxt(dataDir+fileName, skiprows=1, max_rows=1)
 dataOrig = np.loadtxt(dataDir+fileName, skiprows=3)
 
 data = dataOrig[dataOrig[:,0] < 0]  # chcemy tylko minima odległości, a są one zapisywane z ujemnym czasem
@@ -47,7 +49,7 @@ times = 1.e-9 * times
 fig, ax = plt.subplots(figsize=(8, 5))
 ax.scatter(times, distanceDevs, s=0.1, color='blue')
 ax.axhline(y=0, color='k', linestyle='--', alpha=0.5)
-ax.plot(times, linePoints, color='red')
+ax.plot(times, linePoints, color='red', linewidth=0.4)
 ax.set_xlabel(r'Czas [$10^9$ s]',fontsize=12)
 ax.set_ylabel('Odchylenie separacji w periastronie [km]',fontsize=12)
 ax.set_ylim(-0.005,0.001)

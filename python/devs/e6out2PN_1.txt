@@ -1,0 +1,5 @@
+Ostatni czas: 9.78e+05 
+całkowity czas 	 krok czasowy 	 liczba kroków 	 to2PN? 
+[1.e+09 1.e-01 1.e+10 1.e+00]
+Liczba minimów: 35 
+Średnia kwadratowa odchyleń r: 2.51811e-04
